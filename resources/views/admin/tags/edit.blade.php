@@ -6,29 +6,26 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h4>{{$category->name}}</h4>
+                    <h4>{{$tag->name}}</h4>
                 </div>
                 
                 <div class="card-body">
-                    <form action="{{route("categories.update", $category->id)}}" method="POST">
+                    <form action="{{route("tags.update", $tag->id)}}" method="POST">
                         @csrf
                         @method("PUT")
-                        {{-- New Select Category --}}
                         <div class="form-group">
-                            <label for="name">Edit Category Name</label>
-                            <input name="name" type="text" class="form-control @error('title') is-invalid @enderror" id="title" placeholder="Insert new category name here" value="{{old('name'), $category->name}}">
-                        </div>
-                        {{-- Select Category Error --}}
-                        @error('content')
+                            <label for="name">Edit Tag Name</label>
+                            <input name="name" type="text" class="form-control @error('title') is-invalid @enderror" id="title" placeholder="Insert new tag name here" value="{{old('name'), $tag->name}}">
+                            @error('content')
                             <div class="alert alert-danger">{{ $message }}</div>
-                        @enderror
-                
-                        {{-- Submit Button --}}
+                            @enderror
+                        </div>
+
                         <button type="submit" class="btn btn-success">Edit</button>
                     </form>
                 
                     <div class="mt-3">
-                        <a href="{{route("categories.index")}}">
+                        <a href="{{route("tags.index")}}">
                             <button type="button" class="btn btn-dark">Go back</button>
                         </a>
                     </div>

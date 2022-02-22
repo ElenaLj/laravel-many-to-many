@@ -8,17 +8,6 @@
                 <div class="card-header">All Posts</div>
 
                 <div class="card-body">
-                    {{-- <ul>
-                        @foreach ($posts as $post)
-                            <li class="d-flex justify-content-between mb-3">
-                                {{$post->title}}
-                                <a href="{{route("posts.show", $post->id)}}">
-                                    <button type="button" class="btn btn-light">Show</button>
-                                </a>
-                            </li>
-                               
-                        @endforeach
-                    </ul> --}}
                     <div class="mb-3">
                         <a href="{{route("posts.create")}}">
                             <button type="button" class="btn btn-dark">Add Post</button>
