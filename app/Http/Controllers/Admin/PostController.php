@@ -20,7 +20,6 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::all();
-        // dd($posts);
         return view("admin.posts.index", compact("posts"));
     }
 
@@ -44,10 +43,7 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //check incoming datas
-        //dd($request->all());
-
-        //data validation
+        $data = $request->all();
         $request->validate(
             [
             "title" => "required|string|max:150",
@@ -59,24 +55,13 @@ class PostController extends Controller
             ]
         );
 
-        $data = $request->all();
-
-        //insert a new record in db table
         $newPost = new Post();
         $newPost->fill($data);
-
-        // $newPost->title = $data["title"];
-        // $newPost->content = $data["content"];
-
-        // if (isset($data["published"]) ) {
-        //     $newPost->published = true;
-        // }
         $newPost->published = isset($data["published"]);
-        // $newPost->category_id=$data["category_id"];
 
+        // generate a slug
         $slug = Str::of($newPost->title)->slug('-');
         $count = 1;
-
         while(Post::where("slug", $slug)->first() ) {
             $slug = Str::of($newPost->title)->slug('-') . "-{$count}";
             $count++;
@@ -120,7 +105,8 @@ class PostController extends Controller
     public function edit(Post $post)
     {
         $categories = Category::all();
-        return view("admin.posts.edit", compact("post", "categories"));
+        $tags = Tag::all();
+        return view("admin.posts.edit", compact("post", "categories", "tags"));
     }
 
     /**
@@ -132,17 +118,17 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //data validation
+        $data = $request->all();
         $request->validate(
             [
             "title" => "required|string|max:150",
             "content" => "required",
             "published" => "sometimes|accepted",
             "category_id" => "nullable|exists:categories,id",
+            "image" => "nullable|image|mimes:jpeg,bmp,png|max:2048",
+            "tags" => "nullable|exists:tags,id"
             ]
         );
-
-        $data = $request->all();
 
         //update record
         if( $post->title != $data["title"]) {
